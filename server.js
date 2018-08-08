@@ -1,12 +1,24 @@
 const express = require("express");
-// Bringing in mongoose
+
+//  Bringing in bodyParser
+const bodyParser = require("body-parser");
+
+//  Bringing in mongoose
 const mongoose = require("mongoose");
+
 // Creating app
 const app = express();
+
 //  Bringing in route / users
 const users = require("./routes/api/users");
+
 //  Bringing in route / profile
 const profile = require("./routes/api/profile");
+
+//  Middlware - body-parser
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // db config - grabbing the object from config/keys
 const db = require("./config/keys").mongoURI;
 //  Connect to mongodb
