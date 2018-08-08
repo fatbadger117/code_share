@@ -1,0 +1,34 @@
+{
+  "name": "code_share",
+  "version": "1.0.0",
+  "description": "Platform for junior devs to gain experience",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fatbadger117/code_share.git"
+  },
+  "author": "badger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fatbadger117/code_share/issues"
+  },
+  "homepage": "https://github.com/fatbadger117/code_share#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "gravatar": "^1.6.0",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.7",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^10.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
+}
