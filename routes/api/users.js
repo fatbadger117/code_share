@@ -1,10 +1,19 @@
 const express = require("express");
 
+//  Passport brought in
+const passport = require("passport");
+
+//  Keys is brought in to use mongoURI and to sign jwt
+const keys = require("../../config/keys");
+
+//  using jwt
+const jwt = require("jsonwebtoken");
+
 //  Loading User Model (the object exported in models)
 const User = require("../../models/User");
 
-//  brining in gravatar
-const gravatar = require("gravatar");
+//  Input validation import
+const validateRegisterInput = require("../../validation/register");
 
 // creating a router variable
 const navRouter = express.Router();
@@ -31,30 +40,28 @@ navRouter.get("/test", (req, res) => {
 //  If !user then allow
 //  if user exists throw an error and display a message
 navRouter.post("/register", (req, res) => {
+  //  provide a check for errors
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
-      //  Gravatar has a set of rules for Using the object
-      //  This sets an image rated pg, with a size of 200
-      //  d is for a default if the user has no image
-      const avatar = gravatar.url(req.body.email, {
-        s: "200", // size of image
-        r: "pg", // rating
-        d: "mm" // default image
-      });
-
       //  When using mongoose to create a new resource
       //  type new <model name> then pass in the data as an object
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
-        avatar: avatar,
         password: req.body.password
       });
 
       //  Receives req.body.password
       bcrypt.genSalt(10, (err, salt) => {
+        if (err) throw err;
         //  callback will return error, else returns hash
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
@@ -71,4 +78,75 @@ navRouter.post("/register", (req, res) => {
     }
   });
 });
+
+//  Route Info - user login / return JWT
+//  GET request - api/users/login
+//  Public Access
+navRouter.post("/login", (req, res) => {
+  // create variables to hold data for eaiser use
+  const email = req.body.email;
+  const password = req.body.password;
+
+  //  find user by email
+  User.findOne({ email: email }).then(user => {
+    // Check for user
+    if (!user) {
+      return res
+        .status(404)
+        .json({ email: "oooo wheeee cant do, user is not found" });
+    }
+    //  Now if the user is correct
+    //  Check for the password / The password coming =>
+    //  in will be hashed - an extra step is required
+    //  bcrypt has a method that lets you solve this problem
+    bcrypt.compare(password, user.password).then(matchPassword => {
+      if (matchPassword) {
+        //  using tokens - match user
+        //  using access to user
+        //  JWT uses payload object to sign
+        const payload = {
+          id: user.id,
+          name: user.name
+        };
+        //  sign token and return
+        //  14400 means token will expire in 4 hours
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 14400 },
+          (err, token) => {
+            if (err) throw err;
+            res.json({
+              success: true,
+              token: "Bearer " + token
+            });
+          }
+        );
+      } else {
+        return res.status(400).json({
+          passwordErrorResponse:
+            "Sorry, the password is incorrect. Please try again."
+        });
+      }
+    });
+  });
+});
+
+//  Route Info - This route will return current user
+//  Based off of jwt
+//  GET request - api/users/current
+//  Private Access
+//  Be sure to call session false to avoid errors
+navRouter.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    //  creating an object with our own paras protects password data
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email
+    });
+  }
+);
 module.exports = navRouter;
