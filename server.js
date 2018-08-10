@@ -1,5 +1,8 @@
 const express = require("express");
 
+//  Bringing in Passport
+const passport = require("passport");
+
 //  Bringing in bodyParser
 const bodyParser = require("body-parser");
 
@@ -42,9 +45,11 @@ app.use("/api/profile", profile);
 //  Using process.env for heroku use
 const port = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
-  res.send("welcome to the home page");
-});
+//  Middleware - Passport
+app.use(passport.initialize());
+
+//  Passport Configuration
+require("./config/passport")(passport);
 
 // App.listen is how to turn on or use the server
 app.listen(port, (req, res) => {
