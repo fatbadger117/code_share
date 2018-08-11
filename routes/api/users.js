@@ -14,6 +14,7 @@ const User = require("../../models/User");
 
 //  Input validation import
 const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 // creating a router variable
 const navRouter = express.Router();
@@ -83,6 +84,11 @@ navRouter.post("/register", (req, res) => {
 //  GET request - api/users/login
 //  Public Access
 navRouter.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   // create variables to hold data for eaiser use
   const email = req.body.email;
   const password = req.body.password;
