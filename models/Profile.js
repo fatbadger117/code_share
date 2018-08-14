@@ -20,16 +20,16 @@ const ProfileSchema = new Schema({
     type: String,
     required: true
   },
-  skills: {
-    //  must be split from comma seperated values
-    //  into an array, then insert into db
-    type: [String],
-    required: true
-  },
-  bio: {
-    type: String,
-    required: false
-  },
+  // skills: {
+  //   //  must be split from comma seperated values
+  //   //  into an array, then insert into db
+  //   type: [String],
+  //   required: false
+  // },
+  // bio: {
+  //   type: String,
+  //   required: false
+  // },
   date: {
     type: Date,
     default: Date.now
