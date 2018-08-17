@@ -6,7 +6,6 @@ This project has 3 dev students currently working on it.
 
 Dev - start
 
-
 Correct steps to Git Succeed(tm):
 
 Create a branch for work space: $ git checkout -b {new branch name}
@@ -23,4 +22,16 @@ delete the branch from your repositories (Github and local): $ git branch -D {na
 
 pull back into dev branch $ git pull origin dev
 
-note* before you can do the delete Branch pull you need to do git checkout back into the dev branch
+note\* before you can do the delete Branch pull you need to do git checkout back into the dev branch
+
+Starting Code_share
+
+// This is what we will be using mainly
+// to start project using concurrently
+// >npm run dev
+
+// to start backend (only)
+// >npm run server
+
+// to start client (only)
+// >npm run start
