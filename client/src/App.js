@@ -7,6 +7,8 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import "./App.css";
 import Profile from "./components/auth/Profile";
+import MainInputs from './components/auth/MainInputs';
+
 
 class App extends Component {
   render() {
@@ -19,6 +21,7 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/maininputs" component={MainInputs} />
           </div>
           <Footer />
         </div>
