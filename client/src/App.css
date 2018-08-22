@@ -21,6 +21,17 @@ img {
   margin-bottom: -50px;
 }
 
+.landing3 {
+  position: relative;
+  background: url("./img/tom-gainor-786866-unsplash.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+  color: #bbb !important;
+}
+
 .landing-inner {
   padding-top: 80px;
 }
